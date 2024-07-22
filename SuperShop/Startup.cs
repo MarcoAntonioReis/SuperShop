@@ -23,13 +23,16 @@ namespace SuperShop
             //Creates the service and injects it the created DataContext
             services.AddDbContext<DataContext>(cfg =>
             {
-                //Configures it to usse sql server with the Connections string
+                //Configures it to use sql server with the Connections string
                 cfg.UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection"));
             });
 
             //Defines the behavior when the service to creates this, is called
             //check Program.cs for more details, Transient means it will be deleted after used
             services.AddTransient<SeedDb>();
+            //Another example of adding an dependency ejection, this one maintains the object, and when needed deletes it self and creates a new one
+            services.AddScoped<IRepository,Repository>();
+
 
             //services.AddSingleton;
             //services.AddScoped;
