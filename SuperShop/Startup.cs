@@ -1,15 +1,10 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SuperShop.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace SuperShop
 {
@@ -32,6 +27,13 @@ namespace SuperShop
                 cfg.UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection"));
             });
 
+            //Defines the behavior when the service to creates this, is called
+            //check Program.cs for more details, Transient means it will be deleted after used
+            services.AddTransient<SeedDb>();
+
+            //services.AddSingleton;
+            //services.AddScoped;
+            
             services.AddControllersWithViews();
         }
 
