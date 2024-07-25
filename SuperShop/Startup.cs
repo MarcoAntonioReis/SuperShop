@@ -31,7 +31,7 @@ namespace SuperShop
             //check Program.cs for more details, Transient means it will be deleted after used
             services.AddTransient<SeedDb>();
             //Another example of adding an dependency ejection, this one maintains the object, and when needed deletes it self and creates a new one
-            services.AddScoped<IRepository,Repository>();
+            services.AddScoped<IProductRepository,ProductRepository>();
 
 
             //services.AddSingleton;
