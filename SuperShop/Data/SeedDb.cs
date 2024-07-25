@@ -1,4 +1,6 @@
-﻿using SuperShop.Data.Entities;
+﻿using Microsoft.AspNetCore.Identity;
+using SuperShop.Data.Entities;
+using SuperShop.Helpers;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,11 +10,13 @@ namespace SuperShop.Data
     public class SeedDb
     {
         private readonly DataContext _context;
+        private readonly IUserHelper _userHelper;
         private Random _random;
 
-        public SeedDb(DataContext context)
+        public SeedDb(DataContext context, IUserHelper userHelper)
         {
             _context = context;
+            _userHelper = userHelper;
             _random = new Random();
         }
 
@@ -20,25 +24,47 @@ namespace SuperShop.Data
         {
             await _context.Database.EnsureCreatedAsync();
 
+
+            var user = await _userHelper.GetUserByEmailAsync("admin@shop.com");
+            if (user == null)
+            {
+                user = new User
+                {
+                    FirstName = "Admin",
+                    LastName = "User",
+                    Email = "admin@shop.com",
+                    UserName = "admin@shop.com",
+                    PhoneNumber = "21345678"
+                };
+                var result = await _userHelper.AddUserAsync(user, "123456");
+                if (result != IdentityResult.Success)
+                {
+                    throw new InvalidOperationException("Coud not create the user in seeder");
+                }
+            }
+
+
+
             if (!_context.Products.Any())
             {
-                AddProduct("Iphone X");
-                AddProduct("Magic Mouse");
-                AddProduct("iwatch Series 4");
-                AddProduct("iPad Mini");
+                AddProduct("Iphone X", user);
+                AddProduct("Magic Mouse", user);
+                AddProduct("iwatch Series 4", user);
+                AddProduct("iPad Mini", user);
                 await _context.SaveChangesAsync();
 
             }
         }
 
-        private void AddProduct(string name)
+        private void AddProduct(string name, User user)
         {
             _context.Products.Add(new Product
             {
                 Name = name,
                 Price = _random.Next(1000),
                 IsAvailable = true,
-                Stock = _random.Next(100)
+                Stock = _random.Next(100),
+                User = user
 
             });
         }

@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using SuperShop.Data;
 using SuperShop.Data.Entities;
+using SuperShop.Helpers;
+using System.Linq;
 using System.Threading.Tasks;
 
 
@@ -11,16 +13,18 @@ namespace SuperShop.Controllers
     {
 
         private readonly IProductRepository _productRepository;
+        private readonly IUserHelper _userHelper;
 
-        public ProductsController(IProductRepository productRepository)
+        public ProductsController(IProductRepository productRepository, IUserHelper userHelper)
         {
             _productRepository = productRepository;
+            _userHelper = userHelper;
         }
 
         // GET: Products
         public IActionResult Index()
         {
-            return View(_productRepository.GetAll());
+            return View(_productRepository.GetAll().OrderBy(p => p.Name));
         }
 
         // GET: Products/Details/5
@@ -53,8 +57,10 @@ namespace SuperShop.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Product product)
         {
+            //TODO: modify for the user that is logged in
             if (ModelState.IsValid)
             {
+                product.User = await _userHelper.GetUserByEmailAsync("admin@shop.com");
                 await _productRepository.CreateAsync(product);
                 return RedirectToAction(nameof(Index));
             }
@@ -93,6 +99,8 @@ namespace SuperShop.Controllers
             {
                 try
                 {
+                    //TODO: modify for the user that is logged in
+                    product.User = await _userHelper.GetUserByEmailAsync("admin@shop.com");                    
                     await _productRepository.UpdateAsync(product);
 
                 }
