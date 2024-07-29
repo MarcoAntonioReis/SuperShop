@@ -13,6 +13,7 @@ namespace SuperShop.Data
         public GenericRepository(DataContext context)
         {
             _context = context;
+
         }
 
         public IQueryable<T> GetAll()

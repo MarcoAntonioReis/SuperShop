@@ -2,6 +2,7 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
 
 namespace SuperShop.Data.Entities
 {
@@ -38,6 +39,18 @@ namespace SuperShop.Data.Entities
         //The user that created the product
         public User User { get; set; }
 
-
+        //used for the API
+        [IgnoreDataMember]
+        public string ImageFullPath
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(ImageUrl))
+                {
+                    return null;
+                }
+                return $"https://localhost:44330/{ImageUrl.Substring(1)}";
+            }
+        }
     }
 }
