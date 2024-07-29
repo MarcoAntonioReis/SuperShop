@@ -47,6 +47,8 @@ namespace SuperShop
             services.AddTransient<SeedDb>();
 
             services.AddScoped<IUserHelper, UserHelper>();
+            services.AddScoped<IImageHelper, ImageHelper>();
+            services.AddScoped<IConverterHelper, ConverterHelper>();
 
             //Another example of adding an dependency ejection, this one maintains the object, and when needed deletes it self and creates a new one
             services.AddScoped<IProductRepository, ProductRepository>();
