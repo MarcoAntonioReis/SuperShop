@@ -39,8 +39,7 @@ namespace SuperShop.Data.Entities
         //The user that created the product
         public User User { get; set; }
 
-        //used for the API
-        [IgnoreDataMember]
+
         public string ImageFullPath
         {
             get

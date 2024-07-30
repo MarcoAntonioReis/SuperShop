@@ -35,6 +35,8 @@ namespace SuperShop
                 cfg.Password.RequiredLength = 6;
             }).AddEntityFrameworkStores<DataContext>();
 
+            services.AddRazorPages().AddRazorRuntimeCompilation();
+
             //Creates the service and injects it the created DataContext
             services.AddDbContext<DataContext>(cfg =>
             {
