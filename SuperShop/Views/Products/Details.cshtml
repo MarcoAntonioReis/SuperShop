@@ -24,10 +24,10 @@
                 @Html.DisplayFor(model => model.Price)
             </dd>
             <dt class="col-sm-3">
-                @Html.DisplayNameFor(model => model.ImageUrl)
+                @Html.DisplayNameFor(model => model.ImageId)
             </dt>
             <dd class="col-sm-9">
-                @Html.DisplayFor(model => model.ImageUrl)
+                @Html.DisplayFor(model => model.ImageId)
             </dd>
             <dt class="col-sm-3">
                 @Html.DisplayNameFor(model => model.LastPurchase)
@@ -55,10 +55,9 @@
             </dd>
         </div>
         <div class="col-md-4">
-            @if (!string.IsNullOrEmpty(Model.ImageUrl))
-            {
-                <img src="@Url.Content(Model.ImageUrl)" alt="Image" style="width:300px;height:450px; height:auto;max-width:100%" />
-            }
+          
+                <img src="@Url.Content(Model.ImageFullPath)" alt="Image" style="width:300px;height:450px; height:auto;max-width:100%" />
+            
         </div>
     </dl>
 </div>

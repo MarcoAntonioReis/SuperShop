@@ -11,6 +11,14 @@
       "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/supershopmarcodbserver/databases/SuperShop_db",
       "type": "mssql.azure",
       "connectionId": "DefaultConnection"
+    },
+    "storage1": {
+      "serviceConnectorResourceId": "/subscriptions/[parameters('subscriptionId')]/resourcegroups/[parameters('resourceGroupName')]/providers/Microsoft.Web/sites/SuperShop20240730121637/providers/Microsoft.ServiceLinker/linkers/BlobConnectionString_9E278E08D7, /subscriptions/e10f4a77-8379-40d2-b3fd-1b34f1b4fa17/resourcegroups/Tasks/providers/Microsoft.Web/sites/SuperShop20240730121637/providers/Microsoft.ServiceLinker/linkers/BlobConnectionString_B02FAE136D",
+      "secretStore": "AzureAppSettings",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Storage/storageAccounts/supershotpsi",
+      "type": "storage.azure",
+      "connectionId": "Blob:ConnectionString",
+      "dynamicId": null
     }
   }
 }

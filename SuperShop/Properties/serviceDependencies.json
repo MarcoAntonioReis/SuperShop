@@ -3,6 +3,11 @@
     "mssql2": {
       "type": "mssql",
       "connectionId": "DefaultConnection"
+    },
+    "storage1": {
+      "type": "storage",
+      "connectionId": "Blob:ConnectionString",
+      "dynamicId": null
     }
   }
 }
