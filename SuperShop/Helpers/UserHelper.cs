@@ -21,6 +21,14 @@ namespace SuperShop.Helpers
             return await _userManager.CreateAsync(user, password);
         }
 
+        public async Task<IdentityResult> ChangePasswordAsync(
+            User user,
+            string OldPassword,
+            string NewPassword)
+        {
+            return await _userManager.ChangePasswordAsync(user, OldPassword, NewPassword);
+        }
+
         public async Task<User> GetUserByEmailAsync(string email)
         {
             return await _userManager.FindByEmailAsync(email);
@@ -37,7 +45,12 @@ namespace SuperShop.Helpers
 
         public async Task LogOutAsync()
         {
-         await _signInManager?.SignOutAsync();
+            await _signInManager?.SignOutAsync();
+        }
+
+        public async Task<IdentityResult> UpdateUserAsync(User user)
+        {
+            return await _userManager.UpdateAsync(user);
         }
     }
 }
