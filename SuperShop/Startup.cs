@@ -60,6 +60,7 @@ namespace SuperShop
 
             //Another example of adding an dependency ejection, this one maintains the object, and when needed deletes it self and creates a new one
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
 
 
             //services.AddSingleton;
