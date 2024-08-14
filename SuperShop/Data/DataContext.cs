@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using SuperShop.Data.Entities;
+using System.Linq;
 
 namespace SuperShop.Data
 {
@@ -19,5 +20,24 @@ namespace SuperShop.Data
         {
 
         }
+
+        /// <summary>
+        /// to to override to allow cascade delete
+        /// </summary>
+        /// <param name="modelBuilder"></param>
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+        //    var cascadeFKs = modelBuilder.Model
+        //        .GetEntityTypes()
+        //        .SelectMany(t => t.GetForeignKeys())
+        //        .Where(fk => !fk.IsOwnership && fk.DeleteBehavior == DeleteBehavior.Cascade);
+
+        //    foreach (var fk in cascadeFKs)
+        //    {
+        //        fk.DeleteBehavior= DeleteBehavior.Restrict;
+        //    }
+
+        //    base.OnModelCreating(modelBuilder);
+        //}
     }
 }

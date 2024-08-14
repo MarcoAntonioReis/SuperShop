@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace SuperShop.Controllers
 {
- 
+
     public class ProductsController : Controller
     {
 
@@ -54,7 +54,7 @@ namespace SuperShop.Controllers
         }
 
         // GET: Products/Create
-        [Authorize(Roles ="Admin")]
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
@@ -127,12 +127,12 @@ namespace SuperShop.Controllers
                     if (model.ImageFile != null && model.ImageFile.Length > 0)
                     {
 
-                        imageId =  await _blobHelper.UploadBlobAsync(model.ImageFile, "products");
+                        imageId = await _blobHelper.UploadBlobAsync(model.ImageFile, "products");
                     }
 
                     var product = _converterHelper.ToProduct(model, imageId, false);
 
-                  
+
                     product.User = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
                     await _productRepository.UpdateAsync(product);
 
@@ -157,6 +157,9 @@ namespace SuperShop.Controllers
         [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
+
+
+
             if (id == null)
             {
                 return new NotFoundViewResults("ProductNotFound");
@@ -178,13 +181,32 @@ namespace SuperShop.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var product = await _productRepository.GetByIdAsync(id);
-            await _productRepository.DeleteAsync(product);
+            try
+            {
+                await _productRepository.DeleteAsync(product);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (DbUpdateException ex)
+            {
+                if (ex.InnerException != null && ex.InnerException.Message.Contains("DELETE"))
+                {
+                    ViewBag.ErrorTitle = $"{product.Name} provavelmente está a ser usado!";
+                    ViewBag.ErrorMessage = $"{product.Name} não pode ser apagado visto haverem ecomendas que o usam.</br></br>" +
+                        $"Exprimete primeiro apagar todas as ecomendas qie o estão a usar" +
+                        $"e torne novamente a apaga-lo.";                
+                }
+                return View("Error");
+            }
 
-            return RedirectToAction(nameof(Index));
+
+
+
+
         }
 
 
-        public IActionResult ProductNotFound() {
+        public IActionResult ProductNotFound()
+        {
 
             return View();
 
