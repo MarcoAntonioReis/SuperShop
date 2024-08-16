@@ -23,9 +23,9 @@ namespace SuperShop.Data
 
         Task<int> DeleteCityAsync(City city);
 
-        //IEnumerable<SelectListItem> GetComboCourtiers();
+        IEnumerable<SelectListItem> GetComboCourtiers();
 
-        //IEnumerable<SelectListItem> GetComboCities(int countryId);
+        IEnumerable<SelectListItem> GetComboCities(int countryId);
 
         Task<Country> GetCountryAsync(City city);
 
