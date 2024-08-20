@@ -21,12 +21,18 @@ namespace SuperShop.Controllers
     public class AccountController : Controller
     {
         private readonly IUserHelper _userHelper;
+        private readonly IMailHelper _mailHelper;
         private readonly ICountryRepository _countryRepository;
         private readonly IConfiguration _configuration;
 
-        public AccountController(IUserHelper userHelper, ICountryRepository countryRepository, IConfiguration configuration)
+        public AccountController(
+            IUserHelper userHelper,
+            IMailHelper mailHelper,
+            ICountryRepository countryRepository,
+            IConfiguration configuration)
         {
             _userHelper = userHelper;
+            _mailHelper = mailHelper;
             _countryRepository = countryRepository;
             _configuration = configuration;
         }
@@ -119,19 +125,38 @@ namespace SuperShop.Controllers
                         return View(model);
                     }
 
-                    var loginViewModel = new LoginViewModel
+                    //var loginViewModel = new LoginViewModel
+                    //{
+                    //    Password = model.Password,
+                    //    RememberMe = false,
+                    //    Username = model.Username
+
+                    //};
+
+                    //var result2 = await _userHelper.LoginAsync(loginViewModel);
+
+
+                    string myToken = await _userHelper.GenerateEmailConfirmationToken(user);
+                    string tokenLink = Url.Action("ConfirmEmail", "Account", new
                     {
-                        Password = model.Password,
-                        RememberMe = false,
-                        Username = model.Username
+                        userid = user.Id,
+                        tokenLink = myToken
+                    },
+                    protocol: HttpContext.Request.Scheme);
 
-                    };
+                    Helpers.Response response = _mailHelper.SendEmail(model.Username, "Email confirmation", $"<h1>Email Confirmation</h1>" +
+                            $"To allow the user, " +
+                            $"please click in this link:</br></br><a href = \"{tokenLink}\">Confirm Email</a>");
 
-                    var result2 = await _userHelper.LoginAsync(loginViewModel);
+                    //if (result2.Succeeded)
+                    //{
+                    //    return RedirectToAction("Index", "Home");
+                    //}
 
-                    if (result2.Succeeded)
+
+                    if (response.IsSuccess)
                     {
-                        return RedirectToAction("Index", "Home");
+                        ViewBag.Message = "The instructions to allow your user has ben to your email";
                     }
 
                     ModelState.AddModelError(string.Empty, "The user couldn't be logged.");
@@ -187,10 +212,10 @@ namespace SuperShop.Controllers
 
                     user.FirstName = model.FirstName;
                     user.LastName = model.LastName;
-                    user.Address= model.Address;
+                    user.Address = model.Address;
                     user.PhoneNumber = model.PhoneNumber;
-                    user.CityId= model.CityId;
-                    user.City=city;
+                    user.CityId = model.CityId;
+                    user.City = city;
 
 
                     var response = await _userHelper.UpdateUserAsync(user);
@@ -237,6 +262,34 @@ namespace SuperShop.Controllers
                 }
             }
             return View(model);
+
+        }
+
+
+
+        public async Task<IActionResult> ConfirmEmail(string userId, string token)
+        {
+            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(token))
+            {
+                return NotFound();
+            }
+            var user = await _userHelper.GetUserByIdAsync(userId);
+
+            if (user != null)
+            {
+                return NotFound();
+            }
+
+            var result = await _userHelper.ConfirmEmailAsync(user, token);
+
+            if (!result.Succeeded)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return View();
+            }
 
         }
 
