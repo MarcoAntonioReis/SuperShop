@@ -158,8 +158,12 @@ namespace SuperShop.Controllers
                     {
                         ViewBag.Message = "The instructions to allow your user has ben to your email";
                     }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, "The user couldn't be logged.");
+                    }
 
-                    ModelState.AddModelError(string.Empty, "The user couldn't be logged.");
+                    
 
                 }
 
@@ -267,20 +271,20 @@ namespace SuperShop.Controllers
 
 
 
-        public async Task<IActionResult> ConfirmEmail(string userId, string token)
+        public async Task<IActionResult> ConfirmEmail(string userId, string tokenLink)
         {
-            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(token))
+            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(tokenLink))
             {
                 return NotFound();
             }
             var user = await _userHelper.GetUserByIdAsync(userId);
 
-            if (user != null)
+            if (user == null)
             {
                 return NotFound();
             }
 
-            var result = await _userHelper.ConfirmEmailAsync(user, token);
+            var result = await _userHelper.ConfirmEmailAsync(user, tokenLink);
 
             if (!result.Succeeded)
             {
