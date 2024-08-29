@@ -16,6 +16,7 @@ using Azure.Core.Extensions;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Vereyon.Web;
 
 namespace SuperShop
 {
@@ -67,6 +68,10 @@ namespace SuperShop
                 //Configures it to use sql server with the Connections string
                 cfg.UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection"));
             });
+
+
+            services.AddFlashMessage();
+
 
             //Defines the behavior when the service to creates this, is called
             //check Program.cs for more details, Transient means it will be deleted after used
