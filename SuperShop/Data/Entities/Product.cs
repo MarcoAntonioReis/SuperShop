@@ -41,7 +41,7 @@ namespace SuperShop.Data.Entities
 
 
         public string ImageFullPath => ImageId == Guid.Empty
-            ? $"https://supershop20240730121637.azurewebsites.net/images/noimage.png"
-            : $"https://supershotpsi.blob.core.windows.net/products/{ImageId}";
+            ? $"https://supersho2tpsi.blob.core.windows.net/products/noimage.png"
+            : $"https://supersho2tpsi.blob.core.windows.net/products/{ImageId}";
     }
 }
