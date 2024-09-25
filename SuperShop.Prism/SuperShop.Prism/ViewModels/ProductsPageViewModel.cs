@@ -1,6 +1,7 @@
 ﻿using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Navigation;
+using SuperShop.Prism.Helpers;
 using SuperShop.Prism.ItemViewModel;
 using SuperShop.Prism.Models;
 using SuperShop.Prism.Services;
@@ -28,7 +29,7 @@ namespace SuperShop.Prism.ViewModels
             IApiService apiService
             ) : base(navigationService)
         {
-            Title = "Products Page";
+            Title = Languages.Products;
             _navigationService = navigationService;
             _apiService = apiService;
             LoadProductsAsync();
@@ -67,11 +68,14 @@ namespace SuperShop.Prism.ViewModels
                 //necessary to because it need to transfer to the main tread 
                 Device.BeginInvokeOnMainThread(async () =>
                 {
-                    await App.Current.MainPage.DisplayAlert("Error", "Check internet connection", "Accept");
+                    await App.Current.MainPage.DisplayAlert(
+                        Languages.Error,
+                        Languages.ConnectionError,
+                        Languages.Accept);
                 });
                 return;
             }
-            //IsRunning = true;
+            IsRunning = true;
 
             string url = App.Current.Resources["UrlApi"].ToString();
 
@@ -84,7 +88,10 @@ namespace SuperShop.Prism.ViewModels
 
             if (response == null)
             {
-                await App.Current.MainPage.DisplayAlert("Error", response.Message, "Accept");
+                await App.Current.MainPage.DisplayAlert(
+                    Languages.Error,
+                    response.Message,
+                    Languages.Accept);
                 return;
             }
             _myProducts = (List<ProductResponse>)response.Result;
@@ -112,7 +119,7 @@ namespace SuperShop.Prism.ViewModels
             else
             {
                 Products = new ObservableCollection<ProductsItemViewModel>(
-                    _myProducts.Select(p=>
+                    _myProducts.Select(p =>
                     new ProductsItemViewModel(_navigationService)
                     {
                         Id = p.Id,
