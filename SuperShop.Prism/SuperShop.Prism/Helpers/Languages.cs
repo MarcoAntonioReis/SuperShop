@@ -49,6 +49,14 @@ namespace SuperShop.Prism.Helpers
 
         public static string LastSale => Resource.LastSale;
 
+        public static string Login => Resource.Login;
+
+        public static string ModifyUser => Resource.ModifyUser;
+
+        public static string ShowShoppingCart => Resource.ShowShoppingCart;
+
+        public static string ShowPurchaseHistory => Resource.ShowPurchaseHistory;
+
 
     }
 }

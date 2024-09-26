@@ -1,5 +1,6 @@
 using Prism;
 using Prism.Ioc;
+using Prism.Navigation;
 using SuperShop.Prism.Services;
 using SuperShop.Prism.ViewModels;
 using SuperShop.Prism.Views;
@@ -20,10 +21,10 @@ namespace SuperShop.Prism
         protected override async void OnInitialized()
         {
             SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NDaF5cWWtCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdnWXZcdHRcR2BdUUV1Vkc=");
-            
-            InitializeComponent();
 
-            await NavigationService.NavigateAsync("NavigationPage/ProductsPage");
+            InitializeComponent();
+            await NavigationService.NavigateAsync($"/{nameof(SuperShopMasterDetailPage)}/NavigationPage/{nameof(ProductsPage)}");
+            //await NavigationService.NavigateAsync("NavigationPage/ProductsPage");
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
@@ -34,6 +35,10 @@ namespace SuperShop.Prism
             containerRegistry.RegisterForNavigation<LoginPage, LoginPageViewModel>();
             containerRegistry.RegisterForNavigation<ProductsPage, ProductsPageViewModel>();
             containerRegistry.RegisterForNavigation<ProductDetailPage, ProductDetailPageViewModel>();
+            containerRegistry.RegisterForNavigation<SuperShopMasterDetailPage, SuperShopMasterDetailPageViewModel>();
+            containerRegistry.RegisterForNavigation<ModifyUserPage, ModifyUserPageViewModel>();
+            containerRegistry.RegisterForNavigation<ShowHistoryPage, ShowHistoryPageViewModel>();
+            containerRegistry.RegisterForNavigation<ShowCartPage, ShowCartPageViewModel>();
         }
     }
 }
